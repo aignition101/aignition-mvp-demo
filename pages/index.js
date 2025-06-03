@@ -107,9 +107,8 @@ export default function Home() {
             let tempText = null;
 
             if (ahuData[selectedAHU].id === "AHU4" && i === 2) {
-              status = "警告";
-              tempText = "｜PCBA溫度：90°C";
-            }
+              return { status: "警告", reason: "PCBA溫度過熱（95°C）" };
+              }
 
             const statusStyle = getStatusColor(status);
 
