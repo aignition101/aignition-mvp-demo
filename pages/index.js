@@ -13,7 +13,7 @@ export default function Home() {
       style={{ width: "220px", marginBottom: "20px" }}
       />
       <h1 style={{ fontSize: "28px", fontWeight: "bold" }}>AIgnition 智慧節能平台</h1>
-      <p style={{ marginBottom: "20px" }}>這是智慧風機平台的原型介面展示</p>
+      <p style={{ marginBottom: "20px" }}>這是 AIgnition 智慧節能平台的展示版本（自動更新測試）</p>
 
       <div style={{ display: "flex", gap: "20px", marginBottom: "30px" }}>
         <div style={{ background: "#e6f4ea", padding: "20px", borderRadius: "10px" }}>
@@ -63,6 +63,7 @@ export default function Home() {
           }}>
             {fan.status}
           </span>
+            test auto update
         </div>
       ))}
     </div>
