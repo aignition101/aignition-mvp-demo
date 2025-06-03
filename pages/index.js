@@ -4,7 +4,6 @@ export default function Home() {
     { id: 2, name: "風機 #2", status: "需注意", temperature: 61, airflow: 2900, power: 135 },
     { id: 3, name: "風機 #3", status: "異常", temperature: 70, airflow: 2500, power: 160 },
   ];
-
   return (
     <img
       src="/AIgnition logo.png"
