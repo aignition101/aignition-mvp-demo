@@ -40,6 +40,23 @@ export default function Home() {
   };
 
   return (
+    // Taipei天氣顯示
+    <div style={{
+      backgroundColor: "#e0f7fa",
+      padding: "10px 20px",
+      borderRadius: "8px",
+      marginBottom: "20px",
+      maxWidth: "250px",
+      boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+      fontSize: "15px",
+      lineHeight: "1.6"
+    }}>
+    <div style={{ fontWeight: "bold", fontSize: "16px" }}>🌤️ 台北目前天氣</div>
+    <div>溫度：31.4°C</div>
+    <div>濕度：72%</div>
+    <div>狀態：多雲時晴</div>
+  </div>
+  
     <div style={{ padding: 40, fontFamily: "Arial, sans-serif" }}>
       <h1 style={{ fontSize: 28, fontWeight: "bold" }}>AIgnition 智慧節能平台</h1>
       {!selectedAHU ? (
