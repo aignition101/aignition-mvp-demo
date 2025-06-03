@@ -102,7 +102,15 @@ export default function Home() {
             const power = Math.round(speed * 4450);
             const baseHours = 100000 + Math.floor(Math.random() * 20000);
             const hours = baseHours + Math.floor(Math.random() * 200);
-            const status = getFanStatus(speed, hours);
+
+            let status = getFanStatus(speed, hours);
+            let tempText = null;
+
+            if (ahuData[selectedAHU].id === "AHU4" && i === 2) {
+              status = "警告";
+              tempText = "｜PCBA溫度：90°C";
+            }
+
             const statusStyle = getStatusColor(status);
 
             return (
@@ -120,7 +128,10 @@ export default function Home() {
               >
                 <div>
                   <p><strong>Fan {i + 1}</strong></p>
-                  <p>型號：K3G450PA3103｜轉速：{rpm} rpm｜功率：{power} W｜運轉時間：{hours} 小時</p>
+                  <p>
+                    型號：K3G450PA3103｜轉速：{rpm} rpm｜功率：{power} W｜運轉時間：{hours} 小時
+                    {tempText}
+                  </p>
                 </div>
                 <span style={{
                   backgroundColor: statusStyle.background,
