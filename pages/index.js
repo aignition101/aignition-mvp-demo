@@ -62,9 +62,7 @@ export default function Home() {
             fontWeight: "bold"
           }}>
             {fan.status}
-          </span>
-            test auto update
-        </div>
+        
       ))}
     </div>
   );
