@@ -7,10 +7,11 @@ export default function Home() {
 
   return (
     <img
-  src="/AIgnition logo.png"
-  alt="AIgnition Logo"
-  style={{ width: "220px", marginBottom: "20px" }}
-/>
+      src="/AIgnition logo.png"
+      alt="AIgnition Logo"
+      style={{ width: "220px", marginBottom: "20px" }}
+    />
+      
     <div style={{ padding: "40px", fontFamily: "Arial, sans-serif" }}>
       <h1 style={{ fontSize: "28px", fontWeight: "bold" }}>AIgnition 智慧節能平台</h1>
       <p style={{ marginBottom: "20px" }}>這是智慧風機平台的原型介面展示</p>
