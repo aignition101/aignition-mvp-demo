@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 export default function Home() {
@@ -14,14 +15,22 @@ export default function Home() {
   const getStatusColor = (status) => {
     switch (status) {
       case "正常":
-        return { background: "#d4edda", color: "#155724" };
-      case "需注意":
-        return { background: "#fff3cd", color: "#856404" };
-      case "異常":
-        return { background: "#f8d7da", color: "#721c24" };
+        return { background: "#d4edda", color: "#155724", icon: "🟢" };
+      case "警告":
+        return { background: "#fff3cd", color: "#856404", icon: "🟡" };
+      case "故障":
+        return { background: "#f8d7da", color: "#721c24", icon: "🔴" };
       default:
         return {};
     }
+  };
+
+  const getFanStatus = (speedRatio, hours) => {
+    const rpmRatio = speedRatio * 100;
+    if (rpmRatio >= 90 && hours > 100000) {
+      return "警告";
+    }
+    return "正常";
   };
 
   const updateSpeed = (index, newSpeed) => {
@@ -88,11 +97,14 @@ export default function Home() {
           <button onClick={() => setSelectedAHU(null)} style={{ marginBottom: 20 }}>← 返回 AHU 總覽</button>
           <h2>{ahuData[selectedAHU].id} 風機明細</h2>
           {[...Array(ahuData[selectedAHU].fanCount)].map((_, i) => {
-            const rpm = Math.round(ahuData[selectedAHU].speed * 2480);
-            const power = Math.round(ahuData[selectedAHU].speed * 4450);
-            const status = i % 3 === 0 ? "正常" : i % 3 === 1 ? "需注意" : "異常";
-            const hours = Math.floor(500 + Math.random() * 1500);
+            const speed = ahuData[selectedAHU].speed;
+            const rpm = Math.round(speed * 2480);
+            const power = Math.round(speed * 4450);
+            const baseHours = 100000 + Math.floor(Math.random() * 20000);
+            const hours = baseHours + Math.floor(Math.random() * 200);
+            const status = getFanStatus(speed, hours);
             const statusStyle = getStatusColor(status);
+
             return (
               <div
                 key={`fan-${i}`}
@@ -117,7 +129,9 @@ export default function Home() {
                   borderRadius: "20px",
                   fontSize: "12px",
                   fontWeight: "bold"
-                }}>{status}</span>
+                }}>
+                  {statusStyle.icon} {status}
+                </span>
               </div>
             );
           })}
