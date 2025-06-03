@@ -64,7 +64,7 @@ export default function Home() {
               >
                 <div>
                   <p><strong>{ahu.id}</strong></p>
-                  <p>轉速比：{Math.round(ahu.speed * 100)}%｜風量：{ahu.airflow} CMH｜出口溫度：{ahu.temp}°C</p>
+                  <p>轉速比：{Math.round(ahu.speed * 100)}%｜風量：{ahu.airflow} CMH｜出口風溫：{ahu.temp}°C</p>
                   <p>功率：{ahuPower} W｜狀態：正常</p>
                   <input
                     type="range"
