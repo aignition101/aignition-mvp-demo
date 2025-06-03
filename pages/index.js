@@ -5,13 +5,13 @@ export default function Home() {
     { id: 3, name: "風機 #3", status: "異常", temperature: 70, airflow: 2500, power: 160 },
   ];
   return (
-    <img
+       
+    <div style={{ padding: "40px", fontFamily: "Arial, sans-serif" }}>
+      <img
       src="aignition-mvp-demo/AIgnition logo.png"
       alt="AIgnition Logo"
       style={{ width: "220px", marginBottom: "20px" }}
-    />
-      
-    <div style={{ padding: "40px", fontFamily: "Arial, sans-serif" }}>
+      />
       <h1 style={{ fontSize: "28px", fontWeight: "bold" }}>AIgnition 智慧節能平台</h1>
       <p style={{ marginBottom: "20px" }}>這是智慧風機平台的原型介面展示</p>
 
