@@ -6,7 +6,7 @@ export default function Home() {
   ];
   return (
     <img
-      src="/AIgnition logo.png"
+      src="aignition-mvp-demo/AIgnition logo.png"
       alt="AIgnition Logo"
       style={{ width: "220px", marginBottom: "20px" }}
     />
