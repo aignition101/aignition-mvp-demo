@@ -106,9 +106,14 @@ export default function Home() {
             let status = getFanStatus(speed, hours);
             let tempText = null;
 
+            // 固定 AHU4 的第 3 台風機顯示警告（index 從 0 開始，所以 fanIndex === 2）            
             if (ahuData[selectedAHU].id === "AHU4" && i === 2) {
               return { status: "警告", reason: "PCBA溫度過熱（95°C）" };
               }
+            // 一般邏輯：轉速超過90%，且使用時數超過10萬 → 警告
+            if (rpmRatio >= 90 && hours > 100000) {
+              return { status: "警告", reason: null };
+            }
 
             const statusStyle = getStatusColor(status);
 
