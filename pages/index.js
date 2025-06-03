@@ -12,25 +12,28 @@ export default function Home() {
     { id: "AHU6", airflow: 16000, temp: 18.8, speed: 0.35, fanCount: 2 },
   ]);
 
+  const getFanStatus = (speedRatio, hours, ahuId, fanIndex) => {
+    const rpmRatio = speedRatio * 100;
+    if (ahuId === "AHU4" && fanIndex === 2) {
+      return { status: "警告", reason: "PCBA溫度過熱（95°C）" };
+    }
+    if (rpmRatio >= 90 && hours > 100000) {
+      return { status: "警告", reason: null };
+    }
+    return { status: "正常", reason: null };
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case "正常":
-        return { background: "#d4edda", color: "#155724", icon: "🟢" };
+        return { background: "#d4edda", color: "#155724" };
       case "警告":
-        return { background: "#fff3cd", color: "#856404", icon: "🟡" };
-      case "故障":
-        return { background: "#f8d7da", color: "#721c24", icon: "🔴" };
+        return { background: "#fff3cd", color: "#856404" };
+      case "異常":
+        return { background: "#f8d7da", color: "#721c24" };
       default:
         return {};
     }
-  };
-
-  const getFanStatus = (speedRatio, hours) => {
-    const rpmRatio = speedRatio * 100;
-    if (rpmRatio >= 90 && hours > 100000) {
-      return "警告";
-    }
-    return "正常";
   };
 
   const updateSpeed = (index, newSpeed) => {
@@ -40,25 +43,25 @@ export default function Home() {
   };
 
   return (
-    // Taipei天氣顯示
-    <div style={{
-      backgroundColor: "#e0f7fa",
-      padding: "10px 20px",
-      borderRadius: "8px",
-      marginBottom: "20px",
-      maxWidth: "250px",
-      boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-      fontSize: "15px",
-      lineHeight: "1.6"
-    }}>
-    <div style={{ fontWeight: "bold", fontSize: "16px" }}>🌤️ 台北目前天氣</div>
-    <div>溫度：31.4°C</div>
-    <div>濕度：72%</div>
-    <div>狀態：多雲時晴</div>
-  </div>
-  
     <div style={{ padding: 40, fontFamily: "Arial, sans-serif" }}>
-      <h1 style={{ fontSize: 28, fontWeight: "bold" }}>AIgnition 智慧節能平台</h1>
+      {/* 天氣資訊卡片 */}
+      <div style={{
+        backgroundColor: "#e0f7fa",
+        padding: "10px 20px",
+        borderRadius: "8px",
+        marginBottom: "20px",
+        maxWidth: "250px",
+        boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+        fontSize: "15px",
+        lineHeight: "1.6"
+      }}>
+        <div style={{ fontWeight: "bold", fontSize: "16px" }}>🌤️ 台北目前天氣</div>
+        <div>溫度：31.4°C</div>
+        <div>濕度：72%</div>
+        <div>狀態：多雲時晴</div>
+      </div>
+
+      <h1 style={{ fontSize: 28, fontWeight: "bold" }}>設備智能平台</h1>
       {!selectedAHU ? (
         <>
           <h2 style={{ marginTop: 20, marginBottom: 10 }}>設備總覽</h2>
@@ -81,7 +84,7 @@ export default function Home() {
               >
                 <div>
                   <p><strong>{ahu.id}</strong></p>
-                  <p>轉速比：{Math.round(ahu.speed * 100)}%｜風量：{ahu.airflow} CMH｜出口風溫：{ahu.temp}°C</p>
+                  <p>轉速比：{Math.round(ahu.speed * 100)}%｜風量：{ahu.airflow} CMH｜出口溫度：{ahu.temp}°C</p>
                   <p>功率：{ahuPower} W｜狀態：正常</p>
                   <input
                     type="range"
@@ -114,26 +117,11 @@ export default function Home() {
           <button onClick={() => setSelectedAHU(null)} style={{ marginBottom: 20 }}>← 返回 AHU 總覽</button>
           <h2>{ahuData[selectedAHU].id} 風機明細</h2>
           {[...Array(ahuData[selectedAHU].fanCount)].map((_, i) => {
-            const speed = ahuData[selectedAHU].speed;
-            const rpm = Math.round(speed * 2480);
-            const power = Math.round(speed * 4450);
-            const baseHours = 100000 + Math.floor(Math.random() * 20000);
-            const hours = baseHours + Math.floor(Math.random() * 200);
-
-            let status = getFanStatus(speed, hours);
-            let tempText = null;
-
-            // 固定 AHU4 的第 3 台風機顯示警告（index 從 0 開始，所以 fanIndex === 2）            
-            if (ahuData[selectedAHU].id === "AHU4" && i === 2) {
-              return { status: "警告", reason: "PCBA溫度過熱（95°C）" };
-              }
-            // 一般邏輯：轉速超過90%，且使用時數超過10萬 → 警告
-            if (rpmRatio >= 90 && hours > 100000) {
-              return { status: "警告", reason: null };
-            }
-
+            const rpm = Math.round(ahuData[selectedAHU].speed * 2480);
+            const power = Math.round(ahuData[selectedAHU].speed * 4450);
+            const hours = Math.floor(100000 + Math.random() * 20000);
+            const { status, reason } = getFanStatus(ahuData[selectedAHU].speed, hours, ahuData[selectedAHU].id, i);
             const statusStyle = getStatusColor(status);
-
             return (
               <div
                 key={`fan-${i}`}
@@ -149,10 +137,8 @@ export default function Home() {
               >
                 <div>
                   <p><strong>Fan {i + 1}</strong></p>
-                  <p>
-                    型號：K3G450PA3103｜轉速：{rpm} rpm｜功率：{power} W｜運轉時間：{hours} 小時
-                    {tempText}
-                  </p>
+                  <p>型號：K3G450PA3103｜轉速：{rpm} rpm｜功率：{power} W｜運轉時間：{hours} 小時</p>
+                  {reason && <p style={{ color: "#d9534f" }}>⚠️ {reason}</p>}
                 </div>
                 <span style={{
                   backgroundColor: statusStyle.background,
@@ -161,9 +147,7 @@ export default function Home() {
                   borderRadius: "20px",
                   fontSize: "12px",
                   fontWeight: "bold"
-                }}>
-                  {statusStyle.icon} {status}
-                </span>
+                }}>{status}</span>
               </div>
             );
           })}
